@@ -1,0 +1,29 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "backend code for hyfic",
+  "main": "./dist/index.js",
+  "scripts": {
+    "start": "ts-node ./src/app.ts",
+    "dev": "nodemon --config nodemon.json ./src/app.ts",
+    "build": "tsc -p .",
+    "js-start": "node ./dist/app.js",
+    "js-dev": "nodemon ./dist/app.js",
+    "migrate": "prisma migrate dev --name migration"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyfic/api.git"
+  },
+  "author": "fadhilsaheer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hyfic/api/issues"
+  },
+  "homepage": "https://github.com/hyfic/api#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
+  }
+}
