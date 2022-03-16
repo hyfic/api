@@ -1,8 +1,9 @@
 import { LoginArgs, RegisterArgs, UpdateArgs, User } from '../utils/types';
+import { getRoom } from './room.model';
 import { prismaClient } from './prisma';
 import bcrypt from 'bcrypt';
 
-export const registerUser = (data: RegisterArgs) => {
+export const registerUser = (data: RegisterArgs): Promise<User> => {
   return new Promise(async (resolve, reject) => {
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
@@ -23,7 +24,7 @@ export const registerUser = (data: RegisterArgs) => {
   });
 };
 
-export const loginUser = (data: LoginArgs) => {
+export const loginUser = (data: LoginArgs): Promise<User> => {
   return new Promise(async (resolve, reject) => {
     const user = await findUser(data.email).catch(reject);
     if (!user) return;
@@ -38,7 +39,7 @@ export const loginUser = (data: LoginArgs) => {
   });
 };
 
-export const updateUser = (data: UpdateArgs) => {
+export const updateUser = (data: UpdateArgs): Promise<User> => {
   return new Promise(async (resolve, reject) => {
     const user = await findUser(data.ogEmail).catch(reject);
     if (!user) return;
@@ -78,6 +79,50 @@ export const findUser = (email: string): Promise<User> => {
       })
       .catch(() => {
         reject(`Failed to find user with email ${email}`);
+      });
+  });
+};
+
+// room
+
+export const joinRoom = (roomId: string, userId: number) => {
+  return new Promise(async (resolve, reject) => {
+    const room: any = await getRoom(roomId);
+
+    prismaClient.user
+      .update({
+        where: { id: userId },
+        data: {
+          joinedRooms: {
+            set: { roomId },
+          },
+        },
+      })
+      .then(() => resolve(room))
+      .catch((err: any) => {
+        console.log(err);
+        reject(`Failed to join room ${roomId}`);
+      });
+  });
+};
+
+export const leaveRoom = (roomId: string, userId: number) => {
+  return new Promise(async (resolve, reject) => {
+    const room: any = await getRoom(roomId);
+
+    prismaClient.user
+      .update({
+        where: { id: userId },
+        data: {
+          joinedRooms: {
+            disconnect: { roomId },
+          },
+        },
+      })
+      .then(() => resolve(`Left from '${room?.title}' successfully`))
+      .catch((err: any) => {
+        console.log(err);
+        reject(`Failed to leave room ${roomId}`);
       });
   });
 };
