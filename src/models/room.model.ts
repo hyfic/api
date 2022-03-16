@@ -19,13 +19,18 @@ export const createRoom = (data: CreateRoomArgs, userId: number) => {
   });
 };
 
-export const getRooms = () => {
+export const getRooms = (page: number) => {
   return new Promise((resolve, reject) => {
+    const howManyToTake = page ? 20 : undefined; // each page will contain 20 rooms
+    const howManyToSkip = page ? (page - 1) * 20 : undefined; // skipping rooms according to page
+
     prismaClient.room
       .findMany({
         where: {
           isPrivate: false, // this actually works
         },
+        take: howManyToTake,
+        skip: howManyToSkip,
         include: {
           creator: true,
           joinedUsers: true,

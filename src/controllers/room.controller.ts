@@ -21,8 +21,8 @@ export const createRoomController = async (
   return room;
 };
 
-export const getRoomsController = async () => {
-  const rooms: any = await getRooms().catch((err) => {
+export const getRoomsController = async (page: number) => {
+  const rooms: any = await getRooms(page).catch((err) => {
     throw new HttpQueryError(500, err);
   });
 
