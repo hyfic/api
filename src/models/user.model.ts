@@ -70,7 +70,7 @@ export const findUser = (email: string): Promise<User> => {
   return new Promise((resolve, reject) => {
     prismaClient.user
       .findUnique({ where: { email } })
-      .then((user: User) => {
+      .then((user: any) => {
         if (!user) {
           reject(`Failed to find user with email ${email}`);
           return;
@@ -87,7 +87,7 @@ export const findUserById = (userId: number): Promise<User> => {
   return new Promise((resolve, reject) => {
     prismaClient.user
       .findUnique({ where: { id: userId } })
-      .then((user: User) => {
+      .then((user: any) => {
         if (!user) {
           reject(`Failed to find user with email ${userId}`);
           return;
