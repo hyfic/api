@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLString } from 'graphql';
+import { GraphQLList, GraphQLString, GraphQLInt } from 'graphql';
 import { RoomDataType, RoomType } from '../typeDefs/room.typeDef';
 import {
   validateRoomId,
@@ -13,8 +13,12 @@ import {
 
 export const GET_ROOMS = {
   type: new GraphQLList(RoomType),
-  async resolve() {
-    return await getRoomsController();
+  args: {
+    page: { type: GraphQLInt },
+  },
+  async resolve(_: any, requestArgs: any) {
+    let page: number = requestArgs?.page ? requestArgs.page : 0;
+    return await getRoomsController(page);
   },
 };
 
@@ -23,18 +27,18 @@ export const GET_ROOM = {
   args: {
     roomId: { type: GraphQLString },
   },
-  async resolve(parent: any, requestArgs: any) {
+  async resolve(_: any, requestArgs: any) {
     const roomId = validateRoomId(requestArgs);
     return await getRoomController(roomId);
   },
 };
 
 export const GET_SEARCH_RESULT = {
-  type: GraphQLList(RoomType),
+  type: new GraphQLList(RoomType),
   args: {
     query: { type: GraphQLString },
   },
-  async resolve(parent: any, requestArgs: any) {
+  async resolve(_: any, requestArgs: any) {
     const searchQuery = validateSearchQuery(requestArgs);
     return await searchRoomController(searchQuery);
   },
@@ -46,7 +50,7 @@ export const GET_ROOM_DATA = {
   args: {
     roomId: { type: GraphQLString },
   },
-  async resolve(parent: any, requestArgs: any) {
+  async resolve(_: any, requestArgs: any) {
     const roomId = validateRoomId(requestArgs);
     return await getRoomDataController(roomId);
   },

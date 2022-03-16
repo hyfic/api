@@ -18,7 +18,7 @@ export const RoomType = new GraphQLObjectType({
     picture: { type: GraphQLString },
     isPrivate: { type: GraphQLBoolean },
     creator: { type: UserType },
-    joinedUsers: { type: GraphQLList(UserType) },
+    joinedUsers: { type: new GraphQLList(UserType) },
     _count: { type: RoomTypeCount },
   }),
 });
@@ -51,7 +51,7 @@ export const RoomDataType = new GraphQLObjectType({
     picture: { type: GraphQLString },
     isPrivate: { type: GraphQLBoolean },
     creator: { type: UserType },
-    joinedUsers: { type: GraphQLList(UserType) },
+    joinedUsers: { type: new GraphQLList(UserType) },
     _count: { type: RoomTypeCount },
   }),
 });
