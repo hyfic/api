@@ -4,7 +4,7 @@ import { getUserFromContext } from '../../utils/jwt';
 import { RoomType, RoomUserType } from '../typeDefs/room.typeDef';
 import { validateGetUserArgs } from '../validators/user.validator';
 import {
-  getJoinedRoomsController,
+  // getJoinedRoomsController,
   getUserController,
 } from '../../controllers/user.controller';
 
@@ -19,10 +19,10 @@ export const GET_USER = {
   },
 };
 
-export const GET_JOINED_ROOMS = {
-  type: GraphQLList(RoomType),
-  async resolve(parent: any, requestArgs: any, context: ExpressContext) {
-    const loggedInUser: any = getUserFromContext(context);
-    return await getJoinedRoomsController(loggedInUser?.id);
-  },
-};
+// export const GET_JOINED_ROOMS = {
+//   type: new GraphQLList(RoomType),
+//   async resolve(parent: any, requestArgs: any, context: ExpressContext) {
+//     const loggedInUser: any = getUserFromContext(context);
+//     return await getJoinedRoomsController(loggedInUser?.id);
+//   },
+// };
