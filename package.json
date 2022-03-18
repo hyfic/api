@@ -40,7 +40,7 @@
     "express": "^4.17.3",
     "graphql": "^16.3.0",
     "jsonwebtoken": "^8.5.1",
-    "redis": "^3.1.2",
+    "redis": "^4.0.4",
     "short-unique-id": "^4.4.4",
     "socket.io": "^4.4.1"
   }
