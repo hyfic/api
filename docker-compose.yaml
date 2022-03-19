@@ -1,0 +1,33 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass changePassDumbo
+    networks:
+      - webnet
+  db:
+    image: postgres
+    networks:
+      - webnet
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: hyfic
+  web:
+    build:
+      context: .
+    ports:
+      - '5000:5000'
+    networks:
+      - webnet
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/hyfic?schema=public
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: changePassDumbo
+    command:
+      ['./scripts/wait-for-it.sh', 'db:5432', '--', './scripts/start-script.sh']
+networks:
+  webnet:
